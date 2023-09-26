@@ -269,33 +269,14 @@ handleSaveEditClick = (id) => {
     </>
   )}
 </td>
-          <td> 
-            {/* {!this.state.showReplyForm && (  대댓글 주석
-              <button onClick={() => this.handleReplyButtonClick(reply.id)}>
-                댓글 달기
-              </button>
-            )}
-            {this.state.showReplyForm && reply.id === this.state.selectedReplyId && ( */}
-              {/* <form>
-                <input
-                  type="text"
-                  value={this.state.answerContent}
-                  onChange={this.handleInputChange}
-                />
-                <button onClick={() => this.handleSubmitAnswer(reply.id)}>
-                  댓글 작성
-                </button>
-              </form> */}
-            {/* )} */}
-          </td>
-          <td className='modifyBtn' onClick={() => this.handleEditClick(reply)}>
-            수정
-          </td>
-          <td className='deleteBtn' onClick={() => this.answerDeleteClick(reply.id)}>
-            삭제
-          </td>
-        </tr>
-      ))}
+  <td className='modifyBtn' onClick={() => this.handleEditClick(reply)}>
+    수정
+  </td>
+  <td className='deleteBtn' onClick={() => this.answerDeleteClick(reply.id)}>
+    삭제
+  </td>
+</tr>
+  ))}
     </table>
   </div>
 ))}
