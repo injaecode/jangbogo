@@ -146,13 +146,6 @@ class BoardList extends Component {
 
                         </tbody>
                     </table>
-                    {/* <div> 페이징 주석
-                        {pageNumbers.map((page) => (
-                            <span key={page} onClick={() => this.handlePageClick(page)}>
-                                {page}
-                            </span>
-                        ))}
-                    </div> */}
                     <button className="boardCreate">
                         <Link to={`/board/create/${this.state.board_id}/${this.state.region ? this.state.region : ''}`} style={{color:'white'}}>글 쓰기</Link>
                     </button>
