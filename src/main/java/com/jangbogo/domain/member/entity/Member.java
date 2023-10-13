@@ -1,10 +1,5 @@
 package com.jangbogo.domain.member.entity;
 
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,17 +7,6 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jangbogo.domain.common.BaseTimeEntity;
-import com.jangbogo.domain.product.Product;
-
-import lombok.*;
-
-import org.hibernate.annotations.DynamicUpdate;
-
-import javax.persistence.*;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 
@@ -35,16 +19,16 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@DynamicUpdate //실제 값이 변경된 컬럼으로만 update 쿼리 생성
+@DynamicUpdate // 실제 값이 변경된 컬럼으로만 update 쿼리 생성
 @Entity
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Member extends BaseTimeEntity {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -58,10 +42,10 @@ public class Member extends BaseTimeEntity {
     private String password;
 
     private String age;
-    private String region; //지역정보
+    private String region; // 지역정보
 
     private String imageUrl;
-    
+
     @NotNull
     @Enumerated(EnumType.STRING)
     private Provider provider;
@@ -71,9 +55,9 @@ public class Member extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-
     @Builder
-    public Member(String email, String password, String name, Role role, Provider provider, String region, String age, String providerId, String imageUrl) {
+    public Member(String email, String password, String name, Role role, Provider provider, String region, String age,
+            String providerId, String imageUrl) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -84,22 +68,22 @@ public class Member extends BaseTimeEntity {
         this.role = role;
     }
 
-    //닉네임 변경
-    public void updateName(String name){
+    // 닉네임 변경
+    public void updateName(String name) {
         this.name = name;
     }
 
-    //프로필 이미지
-    public void updateImageUrl(String imageUrl){
+    // 프로필 이미지
+    public void updateImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
-    //프로필 이미지 삭제
-    public void deleteImageUrl(){
+    // 프로필 이미지 삭제
+    public void deleteImageUrl() {
         this.imageUrl = null;
     }
 
-    //회원정보 수정
+    // 회원정보 수정
     public void updateMember(String name, String password, String region, String age) {
         this.name = name;
         this.password = password;
@@ -107,11 +91,9 @@ public class Member extends BaseTimeEntity {
         this.age = age;
     }
 
-
-    //임시 비밀번호 발급
+    // 임시 비밀번호 발급
     public void updatePassWord(String password) {
         this.password = password;
     }
 
 }
-

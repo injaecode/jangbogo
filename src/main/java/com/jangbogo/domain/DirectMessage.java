@@ -1,4 +1,5 @@
 package com.jangbogo.domain;
+
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -26,9 +27,9 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class DirectMessage extends BaseTimeEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
 	@Column(nullable = false)
 	private String title; // 제목
@@ -52,29 +53,29 @@ public class DirectMessage extends BaseTimeEntity {
 	@OnDelete(action = OnDeleteAction.NO_ACTION)
 	private Member receiver; // 받는 사람
 
-    public DirectMessage(String title, String content, Member sender, Member receiver, LocalDateTime createAt) {
-        this.title = title;
-        this.content = content;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.deletedBySender = false;
-        this.deletedByReceiver = false;
-        this.setCreateAt(createAt);
-    }
+	public DirectMessage(String title, String content, Member sender, Member receiver, LocalDateTime createdAt) {
+		this.title = title;
+		this.content = content;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.deletedBySender = false;
+		this.deletedByReceiver = false;
+		this.setCreatedAt(createdAt);
+	}
 
-	// 편지 삭제와 관련된 메소드 
-	// 발신자가 메세지를 삭제하면 필드의 값을 true로 변경 
+	// 편지 삭제와 관련된 메소드
+	// 발신자가 메세지를 삭제하면 필드의 값을 true로 변경
 	public void deleteBySender() {
 		this.deletedBySender = true;
 	}
 
-	// 수신자가 메세지를 삭제하면 필드의 값을 true로 변경 
+	// 수신자가 메세지를 삭제하면 필드의 값을 true로 변경
 	public void deleteByReceiver() {
 		this.deletedByReceiver = true;
 	}
 
-	// 수신자, 발신자 둘다 메세지를 삭제하면 DB에서 메세지 삭제 
+	// 수신자, 발신자 둘다 메세지를 삭제하면 DB에서 메세지 삭제
 	public boolean isDeletedMessage() {
-        return isDeletedByReceiver() && isDeletedBySender();
-    }
+		return isDeletedByReceiver() && isDeletedBySender();
+	}
 }

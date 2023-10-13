@@ -1,20 +1,16 @@
 package com.jangbogo.repository;
 
-import com.jangbogo.domain.member.entity.Member;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.jangbogo.domain.Board.Answer;
-
-import java.util.List;
+import com.jangbogo.domain.board.Answer;
+import com.jangbogo.domain.member.entity.Member;
 
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
-	
-//	Page<Answer> findAllByOrderByParentIdDescDepthAscCreateAtDesc(Pageable pageable);
-	List<Answer> findByName(Member member);
 
+	List<Answer> findByName(Member member);
 
 }

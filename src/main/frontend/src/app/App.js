@@ -21,7 +21,7 @@ import MessageReceiverDetail from '../pages/message/MessageReceiverDetail';
 import MessageSenderDetail from '../pages/message/MessageSenderDetail';
 
 
-import Search from '../pages/Search';
+import Search from '../pages/search';
 import ZzimItem from '../components/ZzimHandler'
 import Save from '../components/Save';
 
@@ -44,19 +44,19 @@ class App extends Component {
       authenticated: false,
       currentUser: null,
       loading: true,
-      query:''
+      query: ''
     }
-    this.handleSearch=this.handleSearch.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
     this.loadCurrentlyLoggedInUser = this.loadCurrentlyLoggedInUser.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
-    }
-    
-    handleSearch(query){
-      this.setState({query});
-    }
+  }
 
-    loadCurrentlyLoggedInUser() {
-      getCurrentUser()
+  handleSearch(query) {
+    this.setState({ query });
+  }
+
+  loadCurrentlyLoggedInUser() {
+    getCurrentUser()
       .then(response => {
         this.setState({
           currentUser: response,
@@ -66,34 +66,34 @@ class App extends Component {
       }).catch(error => {
         this.setState({
           loading: false
-        });  
-      });    
-    }
-
-
-    handleLogout() {
-      localStorage.removeItem(ACCESS_TOKEN);
-      localStorage.removeItem(REFRESH_TOKEN);
-      this.setState({
-        authenticated: false,
-        currentUser: null
+        });
       });
-      alert("로그아웃 했습니다.");
-      window.location.href="/";
+  }
+
+
+  handleLogout() {
+    localStorage.removeItem(ACCESS_TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
+    this.setState({
+      authenticated: false,
+      currentUser: null
+    });
+    alert("로그아웃 했습니다.");
+    window.location.href = "/";
+  }
+
+  componentDidMount() {
+    this.loadCurrentlyLoggedInUser();
+  }
+
+  render() {
+    if (this.state.loading) {
+      return <LoadingIndicator />
     }
-  
-    componentDidMount() {
-      this.loadCurrentlyLoggedInUser();
-    }
-  
-    render() {
-      if(this.state.loading) {
-        return <LoadingIndicator />
-      }
-      
-      return (
-        <div className="app">
-            <BrowserRouter>
+
+    return (
+      <div className="app">
+        <BrowserRouter>
           <div className="app-top-box">
             <Header authenticated={this.state.authenticated} currentUser={this.state.currentUser} onLogout={this.handleLogout} onSearch={this.handleSearch} />
           </div>
@@ -102,11 +102,11 @@ class App extends Component {
               <PrivateRoute path="/mypage" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={Mypage}></PrivateRoute>
               <PrivateRoute path="/setting/profile" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={ProfileModify}></PrivateRoute>
               <Route path="/login" render={(props) => <Login authenticated={this.state.authenticated} {...props} />}></Route>
-              
-              <PrivateRoute path="/messages/postbox/receiver/:id" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={MessageReceiverDetail}></PrivateRoute>  
-              <PrivateRoute path="/messages/postbox/sender/:id" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={MessageSenderDetail}></PrivateRoute>  
-              <PrivateRoute path="/messages/postbox" authenticated={this.state.authenticated} currentUser={this.state.currentUser}  component={MessageList}></PrivateRoute>
-      
+
+              <PrivateRoute path="/messages/postbox/receiver/:id" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={MessageReceiverDetail}></PrivateRoute>
+              <PrivateRoute path="/messages/postbox/sender/:id" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={MessageSenderDetail}></PrivateRoute>
+              <PrivateRoute path="/messages/postbox" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={MessageList}></PrivateRoute>
+
               <Route path="/signup" render={(props) => <Signup authenticated={this.state.authenticated} {...props} />}></Route>
               <Route path="/oauth2/redirect" component={OAuth2RedirectHandler}></Route>
 
@@ -115,20 +115,20 @@ class App extends Component {
               <PrivateRoute path="/board/modify/:board_id/:id/:region?" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={BoardCreate}></PrivateRoute>
               <PrivateRoute path="/board/list/:board_id/:region?" authenticated={this.state.authenticated} currentUser={this.state.currentUser} component={BoardList}></PrivateRoute>
               <Route path="/search" render={(props) => <Search query={this.state.query} authenticated={this.state.authenticated} currentUser={this.state.currentUser} />} />
-              <PrivateRoute path="/save" render={(props)=><Save authenticated={this.state.authenticated} currentUser={this.state.currentUser}/>}></PrivateRoute>
-              <Route path="/myfav" render={(props)=><ZzimItem authenticated={this.state.authenticated} currentUser={this.state.currentUser}/>}></Route>
+              <PrivateRoute path="/save" render={(props) => <Save authenticated={this.state.authenticated} currentUser={this.state.currentUser} />}></PrivateRoute>
+              <Route path="/myfav" render={(props) => <ZzimItem authenticated={this.state.authenticated} currentUser={this.state.currentUser} />}></Route>
 
               <Route path="/password/find" component={FindPassword}></Route>
-              <Route exact path="/" render={(props) => <Main currentUser={this.state.currentUser}/>}></Route> 
+              <Route exact path="/" render={(props) => <Main currentUser={this.state.currentUser} />}></Route>
               <Route component={NotFound}></Route>
             </Switch>
           </div>
           <div className="app-bottom-box">
             <Footer />
           </div>
-            </BrowserRouter>
-        </div>      
-      );
-    }
+        </BrowserRouter>
+      </div>
+    );
   }
-  export default App ;
+}
+export default App;

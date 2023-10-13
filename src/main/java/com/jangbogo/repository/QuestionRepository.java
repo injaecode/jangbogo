@@ -11,54 +11,45 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import com.jangbogo.domain.Board.Question;
+import com.jangbogo.domain.board.Question;
 
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-	
-	Question findBySubject(String subject);    
+
+	Question findBySubject(String subject);
 
 	Question findByContent(String content);
 
-
 	List<Question> findByName(Member member);
 
-	List<Question> findByContentLike(String content); 
-	
-	List<Question> findBySubjectLikeOrContentLike (String subject, String content); 
-	
-	List<Question> findBySubjectLikeOrderByCreateAtAsc(String subject);
-	List<Question> findBySubjectLikeOrderByCreateAtDesc(String subject);
+	List<Question> findByContentLike(String content);
 
-	List <Question> findAllByOrderByCreateAtAsc(); 
-	List <Question> findAllByOrderByCreateAtDesc();
-	
-//    List<Question> findBySubjectLikeOrderByReadCountDesc(String subject);
-//
-//    Page<Question> findAllByOrderByReadCountDesc(Pageable pageable);
-//
-//    Page<Question> findAllByKeywordOrderByReadCountDesc(@Param("kw") String kw, Pageable pageable);
+	List<Question> findBySubjectLikeOrContentLike(String subject, String content);
 
-	// board_id를 기준으로 검색하는 메소드
-	Page<Question> findByBoardId(Long boardId, Pageable pageable);
+	List<Question> findBySubjectLikeOrderByCreatedAtAsc(String subject);
 
-	// board_id와 region을 기준으로 검색하는 메소드
+	List<Question> findBySubjectLikeOrderByCreatedAtDesc(String subject);
+
+	List<Question> findAllByOrderByCreatedAtAsc();
+
+	List<Question> findAllByOrderByCreatedAtDesc();
+
 	Page<Question> findByBoardIdAndRegion(Long boardId, String region, Pageable pageable);
 
 	Page<Question> findAll(Specification<Question> spec, Pageable pageable);
 
-    @Query("select "
-            + "distinct q "
-            + "from Question q " 
-            + "left outer join Member u1 on q.name=u1 "
-            + "left outer join Answer a on a.question=q "
-            + "left outer join Member u2 on a.name=u2 "
-            + "where "
-            + "   q.subject like %:kw% "
-            + "   or q.content like %:kw% "
-            + "   or u1.name like %:kw% "
-            + "   or a.content like %:kw% "
-            + "   or u2.name like %:kw% ")
-    Page<Question> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
+	@Query("select "
+			+ "distinct q "
+			+ "from Question q "
+			+ "left outer join Member u1 on q.name=u1 "
+			+ "left outer join Answer a on a.question=q "
+			+ "left outer join Member u2 on a.name=u2 "
+			+ "where "
+			+ "   q.subject like %:kw% "
+			+ "   or q.content like %:kw% "
+			+ "   or u1.name like %:kw% "
+			+ "   or a.content like %:kw% "
+			+ "   or u2.name like %:kw% ")
+	Page<Question> findAllByKeyword(@Param("kw") String kw, Pageable pageable);
 
 }

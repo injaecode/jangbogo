@@ -3,7 +3,7 @@ package com.jangbogo.advice;
 import com.jangbogo.advice.error.*;
 import com.jangbogo.advice.payload.ErrorCode;
 import com.jangbogo.advice.payload.ErrorResponse;
-import com.jangbogo.payload.response.ApiResponse;
+import com.jangbogo.dto.payload.response.ApiResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -113,7 +113,6 @@ public class ApiControllerAdvice {
         ApiResponse apiResponse = ApiResponse.builder().check(false).information(response).build();
         return new ResponseEntity<>(apiResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
 
     @ExceptionHandler(DefaultNullPointerException.class)
     protected ResponseEntity<?> handleNullPointerException(DefaultNullPointerException e) {

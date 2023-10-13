@@ -1,4 +1,4 @@
-package com.jangbogo.config.security.auth.company;
+package com.jangbogo.config.security.auth.providers;
 
 import com.jangbogo.config.security.auth.Oauth2UserInfo;
 import com.jangbogo.domain.member.entity.Provider;
@@ -56,7 +56,7 @@ public class Naver extends Oauth2UserInfo {
     }
 
     @Override
-    public String getProvider(){
+    public String getProvider() {
         return Provider.naver.toString();
     }
 }

@@ -1,33 +1,33 @@
 package com.jangbogo.controller;
 
-import com.jangbogo.advice.payload.ErrorResponse;
+import javax.validation.Valid;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.jangbogo.config.security.token.CurrentUser;
 import com.jangbogo.config.security.token.UserPrincipal;
-import com.jangbogo.domain.member.entity.Member;
-import com.jangbogo.exeption.MemberNotFoundException;
-import com.jangbogo.payload.request.auth.*;
-import com.jangbogo.payload.response.AuthResponse;
-import com.jangbogo.payload.response.MailResponse;
-import com.jangbogo.payload.response.Message;
-
+import com.jangbogo.dto.payload.request.auth.RefreshTokenRequest;
+import com.jangbogo.dto.payload.request.auth.SignInRequest;
+import com.jangbogo.dto.payload.request.auth.SignUpRequest;
+import com.jangbogo.dto.payload.request.auth.UpdateRequest;
+import com.jangbogo.dto.payload.response.MailResponse;
 import com.jangbogo.service.MailService;
 import com.jangbogo.service.auth.AuthService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.validation.Valid;
 
 @Slf4j
 @Tag(name = "Authorization", description = "Authorization API")
@@ -42,11 +42,11 @@ public class AuthController {
 
     @GetMapping(value = "/")
     public ResponseEntity<?> whoAmI(@CurrentUser UserPrincipal userPrincipal) {
-            return authService.whoAmI(userPrincipal);
+        return authService.whoAmI(userPrincipal);
     }
 
     @DeleteMapping(value = "/delete")
-    public ResponseEntity<?> delete(@CurrentUser UserPrincipal userPrincipal){
+    public ResponseEntity<?> delete(@CurrentUser UserPrincipal userPrincipal) {
         log.info("유저 정보 = {}", userPrincipal.getEmail());
         return authService.delete(userPrincipal);
     }
@@ -57,13 +57,12 @@ public class AuthController {
         return authService.signin(signInRequest);
     }
 
-
     /* 회원가입 */
     @PostMapping(value = "/signup")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
         try {
             return authService.signup(signUpRequest);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -76,25 +75,24 @@ public class AuthController {
         return authService.refresh(tokenRefreshRequest);
     }
 
-
     /* 로그아웃 */
-    @PostMapping(value="/signout")
-    public ResponseEntity<?> signout(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody RefreshTokenRequest tokenRefreshRequest) {
+    @PostMapping(value = "/signout")
+    public ResponseEntity<?> signout(@CurrentUser UserPrincipal userPrincipal,
+            @Valid @RequestBody RefreshTokenRequest tokenRefreshRequest) {
         return authService.signout(tokenRefreshRequest);
     }
 
-
     /* 회원 정보 수정 */
     @PatchMapping("/update")
-    public ResponseEntity<?> update(@CurrentUser UserPrincipal userPrincipal, @Valid @RequestBody UpdateRequest updateRequest) {
+    public ResponseEntity<?> update(@CurrentUser UserPrincipal userPrincipal,
+            @Valid @RequestBody UpdateRequest updateRequest) {
         return authService.modifyMember(userPrincipal, updateRequest);
     }
 
-
     /* 프로필 이미지 변경 */
     @PostMapping("/thumbnail/update")
-    public ResponseEntity<?> thumbnailUpdate(@CurrentUser UserPrincipal userPrincipal, @RequestPart(value="file", required=true) MultipartFile multipartFile
-    ) {
+    public ResponseEntity<?> thumbnailUpdate(@CurrentUser UserPrincipal userPrincipal,
+            @RequestPart(value = "file", required = true) MultipartFile multipartFile) {
 
         return authService.thumbnailModify(userPrincipal, multipartFile);
     }
@@ -135,7 +133,7 @@ public class AuthController {
         if (result == 0) {
             MailResponse mail = authService.sendCode(email, code);
             mailService.sendMail(mail, "signUpCode");
-        }else {
+        } else {
             return Integer.toString(result);
         }
 

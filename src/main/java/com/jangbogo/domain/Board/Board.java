@@ -1,13 +1,9 @@
-package com.jangbogo.domain.Board;
-
-
-import java.util.List;
+package com.jangbogo.domain.board;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,13 +15,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 public class Board {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	private String type;
-	
+
 	private String name;
 
 	@Builder

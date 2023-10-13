@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 @rem
 @rem Copyright 2015 the original author or authors.
 @rem
@@ -182,4 +181,3 @@ exit /b %EXIT_CODE%
 if "%OS%"=="Windows_NT" endlocal
 
 :omega
->>>>>>> ed6d9544c8bb75292349dd76fd507a0d1827cbaf
